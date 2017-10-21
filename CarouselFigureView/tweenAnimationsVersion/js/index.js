@@ -1,4 +1,3 @@
-// 根据li标签长度动态设置ul标签长度
 ;(function(){
 	var banner = document.querySelector('.banner');
 	var ul = banner.querySelector('ul');
@@ -25,6 +24,7 @@
 		move();
 	});
 
+	// 过度结束事件
 	ul.addEventListener("transitionend",function(){
 		if(count >= lis.length -1){
 			count = 1;
