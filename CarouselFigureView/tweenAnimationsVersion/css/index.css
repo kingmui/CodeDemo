@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+html,body,ul{
+	margin: 0;
+	padding: 0;
+}
+
+img{
+	width: 100%;
+	display: block;
+	border: none;
+}
+
+ul{
+	list-style: none;
+}
+
+li{
+	float: left;
+}
+
+.clearfix::after,
+.clearfix::before{
+	content: "";
+	display: table;
+}
+
+.clearfix::after{
+	clear: both;
+}
+
+.wrap{
+	width: 100%;
+	min-width: 320px;
+	max-width: 640px;
+	margin: 0 auto;
+	background-color: #f7f7f7;
+}
+.banner{
+	width: 100%;
+	min-width: 320px;
+	max-width: 640px;
+	overflow: hidden;
+}
