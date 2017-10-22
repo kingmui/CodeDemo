@@ -21,11 +21,13 @@
 	Carousel.boundaryJudgment = function(){
 		// 边界值判断
 		if(count >= lis.length -1){
-			count = 1;
+			count = 1;			
 		}
 		if(count <= 0){
-			count = lis.length - 2;
+			count = lis.length - 2;			
 		}
+		Carousel.removeTransition(ul);
+		Carousel.setTranslate(ul,- liWidth * count);
 	}
 	Carousel.addTransition = function(ele){
 		// 添加过度
@@ -71,16 +73,7 @@
 
 	// 过度结束事件
 	ul.addEventListener("transitionend",function(){
-		if(count >= lis.length -1){
-			count = 1;
-			Carousel.removeTransition(ul);
-			Carousel.setTranslate(ul,- liWidth * count);
-		}
-		if(count <= 0){
-			count = lis.length - 2;
-			Carousel.removeTransition(ul);
-			Carousel.setTranslate(ul,- liWidth * count);
-		}
+		Carousel.boundaryJudgment();
 		// 同步小圆点
 		for(var i = 0; i < indicators.length; i++){
 			indicators[i].classList.remove("current");
