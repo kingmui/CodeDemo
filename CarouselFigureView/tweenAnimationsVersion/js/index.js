@@ -1,8 +1,8 @@
 ;(function(){
 	var banner = document.querySelector('.banner');
 	var ul = banner.querySelector('ul');
-	var indicators = banner.querySelectorAll('ol>li');
 	var lis = ul.children;
+	var indicators = banner.querySelectorAll('ol>li');
 	var liWidth = 0;
 	var ulWidth = 0;
 	var startX = 0;
@@ -74,7 +74,7 @@
 		Carousel.move();
 	});
 
-	// 过渡完成后进行边界判断
+	// CSS transition 结束后进行边界判断
 	ul.addEventListener("transitionend",function(){
 		if(count >= lis.length -1){
 			count = 1;
@@ -93,14 +93,14 @@
 		indicators[count - 1].classList.add("current");
 	});
 
-	// 手指触摸屏幕时
+	// 当触点与触控平面接触时
 	ul.addEventListener("touchstart",function(e){
 		startX = e.changedTouches[0].clientX;
 		startTime = new Date();
 		clearInterval(timer);
 	});
 
-	// 手指在屏幕上滑动时
+	// 当触点在触控平面上移动时
 	ul.addEventListener("touchmove",function(e){
 		Carousel.boundaryJudgment();
 		var distance = e.changedTouches[0].clientX - startX;
@@ -108,12 +108,12 @@
 		Carousel.setTranslate(ul,-liWidth * count + distance);
 	});
 
-	// 手指从屏幕上离开时
+	// 当触点离开触控平面时
 	ul.addEventListener("touchend",function(e){
 		Carousel.boundaryJudgment();
 		var distance = e.changedTouches[0].clientX - startX;
 		var moveTime = new Date() - startTime;
-		console.log("距离：" + distance + ",时间：" + moveTime);
+		// console.log("距离：" + distance + ",时间：" + moveTime);
 		if(Math.abs(distance) >= liWidth / 3 || moveTime <= 300 && Math.abs(distance) >= 30){
 			distance > 0 ? count-- : count++;
 		}
