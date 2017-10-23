@@ -23,6 +23,10 @@ li{
 	float: left;
 }
 
+ul{
+	width: 1000%;
+}
+
 ol{
 	position: absolute;
 	left: 50%;
