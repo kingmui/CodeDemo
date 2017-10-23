@@ -10,16 +10,19 @@
 	var count = 1;
 	var timer;
 	var Carousel = {};
+
+	// 定时器
 	Carousel.move = function(){
-		// 定时器函数封装
 		timer = setInterval(function(){
 			count++;
 			Carousel.addTransition(ul);
 			Carousel.setTranslate(ul,- liWidth * count);
 		},2000);
 	}
+	Carousel.move();
+
+	// 边界值判断
 	Carousel.boundaryJudgment = function(){
-		// 边界值判断
 		if(count >= lis.length -1){
 			count = 1;			
 		}
@@ -27,23 +30,27 @@
 			count = lis.length - 2;			
 		}
 	}
+
+	// 添加过度
 	Carousel.addTransition = function(ele){
-		// 添加过度
 		ele.style.transition = "all .5s";
 		ele.style.webkitTransition = "all .5s";
 	}
+
+	// 移除过度
 	Carousel.removeTransition = function(ele){
-		// 移除过度
 		ele.style.transition = "none";
 		ele.style.webkitTransition = "none";
 	}
+
+	// 设置偏移
 	Carousel.setTranslate = function(ele,value,direction){
-		// 设置变换
-		direction = direction ? direction : "X";
+		var direction = direction ? direction : "X";
 		ele.style.transform = "translate" + direction + "(" + value +"px)";
 	}
+
+	// 设置ul的宽
 	Carousel.setUlWidth = function(){
-		// 设置ul标签宽的函数封装
 		liWidth = banner.offsetWidth;
 		ulWidth = lis.length * liWidth;
 		for(var i = 0; i < lis.length; i++){
@@ -67,9 +74,7 @@
 		Carousel.move();
 	});
 
-	Carousel.move();
-
-	// 过度结束事件
+	// 过渡完成后进行边界判断
 	ul.addEventListener("transitionend",function(){
 		if(count >= lis.length -1){
 			count = 1;
@@ -88,14 +93,14 @@
 		indicators[count - 1].classList.add("current");
 	});
 
-	// 开始触摸
+	// 手指触摸屏幕时
 	ul.addEventListener("touchstart",function(e){
 		startX = e.changedTouches[0].clientX;
 		startTime = new Date();
 		clearInterval(timer);
 	});
 
-	// 触摸移动
+	// 手指在屏幕上滑动时
 	ul.addEventListener("touchmove",function(e){
 		Carousel.boundaryJudgment();
 		var distance = e.changedTouches[0].clientX - startX;
@@ -103,7 +108,7 @@
 		Carousel.setTranslate(ul,-liWidth * count + distance);
 	});
 
-	// 触摸结束
+	// 手指从屏幕上离开时
 	ul.addEventListener("touchend",function(e){
 		Carousel.boundaryJudgment();
 		var distance = e.changedTouches[0].clientX - startX;
