@@ -45,7 +45,7 @@
 
 	// 设置偏移
 	Carousel.setTranslate = function(ele,value,direction){
-		var direction = direction ? direction : "X";
+		var direction = direction || "X";
 		ele.style.transform = "translate" + direction + "(" + value +"px)";
 	}
 
