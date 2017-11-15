@@ -28,6 +28,45 @@ http.createServer(function (req, res) {
       res.end(fileData);
     });
   }
+  res.km_getData = function(callback){
+    fs.readFile(path.join(__dirname, './data/data.json'), 'utf8', function (err, data) {
+      if (err && err.code != 'ENOENT') {
+        throw err;
+      }
+      var list = JSON.parse(data || '[]');
+      callback(list);
+    });
+  }
+  res.km_pushData = function(list,callback){
+    fs.writeFile(path.join(__dirname, './data/data.json'), JSON.stringify(list), function (err) {
+      if (err) {
+        throw err;
+      }
+      callback();
+    });
+  }
+  res.km_getPostData = function(req,callback){
+    // 获取post方式发送的数据
+      // post发送的请求，文件是通过**一段一段**的buffer进行传输的，监听data、end
+      var bufferArr = []; // 定义一个空数组存放接收到的一段一段的buffer数据
+      // 监听data事件
+      req.on('data', function (chunk) {
+        // chunk [tʃʌŋk]:厚厚的一块; （某物） 相当大的数量或部分; 强壮、结实的马;
+        // 将接收到的一段一段的chunk(buffer数据)存入bufferArr数组中
+        bufferArr.push(chunk);
+      });
+      // 监听end事件
+      req.on('end', function () {
+        // console.log(bufferArr);
+        var buffer = Buffer.concat(bufferArr); // 将存储的一段一段的buffer数据拼成buffer数据
+        // console.log(buffer);
+        var postData = buffer.toString('utf8'); // 将buffer数据转为字符串（即通过post方式传送的字符串）
+        // console.log(postData);
+        postData = querystring.parse(postData); // 通过Node.js内置模块querystring的parse方法将字符串转为对象
+        // console.log(postData);
+        callback(postData);
+      });
+  }
 
   // 首页
   if (req.url === '/' || req.url === '/index') {
@@ -63,11 +102,7 @@ http.createServer(function (req, res) {
   }
   // 添加GET
   else if (req.url.startsWith('/add') && req.method === 'GET') {
-    fs.readFile(path.join(__dirname, './data/data.json'), 'utf8', function (err, data) {
-      if (err && err.code != 'ENOENT') {
-        throw err;
-      }
-      var list = JSON.parse(data || '[]');
+    res.km_getData(function(){
       // 获取对象数据，解析URL对象
       // url.parse(urlString[, parseQueryString[, slashesDenoteHost]])
       // urlString <string> 要解析的 URL 字符串。
@@ -91,10 +126,7 @@ http.createServer(function (req, res) {
       //   href: '/add?title=sss&url=sss&text=sss' }
       urlObj.query.id = list.length;
       list.push(urlObj.query);
-      fs.writeFile(path.join(__dirname, './data/data.json'), JSON.stringify(list), function (err) {
-        if (err) {
-          throw err;
-        }
+      res.km_pushData(list,function(){
         // console.log('写入成功！');
         res.statusCode = 301;
         res.statusMessage = 'Moved Permanently';
@@ -111,38 +143,12 @@ http.createServer(function (req, res) {
   }
   // 添加POST
   else if (req.url === '/add' && req.method === 'POST') {
-    // 1.读取data.json文件中的数据
-    fs.readFile(path.join(__dirname, './data/data.json'), 'utf8', function (err, data) {
-      if (err) {
-        throw err;
-      }
-      // 2.将字符串数组转换为真正的数组
-      var list = JSON.parse(data || '[]');
-      // 3.获取post方式发送的数据
-      // post发送的请求，文件是通过**一段一段**的buffer进行传输的，监听data、end
-      var bufferArr = []; // 定义一个空数组存放接收到的一段一段的buffer数据
-      // 监听data事件
-      req.on('data', function (chunk) {
-        // chunk [tʃʌŋk]:厚厚的一块; （某物） 相当大的数量或部分; 强壮、结实的马;
-        // 将接收到的一段一段的chunk(buffer数据)存入bufferArr数组中
-        bufferArr.push(chunk);
-      });
-      // 监听end事件
-      req.on('end', function () {
-        // console.log(bufferArr);
-        var buffer = Buffer.concat(bufferArr); // 将存储的一段一段的buffer数据拼成buffer数据
-        // console.log(buffer);
-        var postData = buffer.toString('utf8'); // 将buffer数据转为字符串（即通过post方式传送的字符串）
-        // console.log(postData);
-        postData = querystring.parse(postData); // 通过Node.js内置模块querystring的parse方法将字符串转为对象
-        // console.log(postData);
+    res.km_getData(function(list){
+      res.km_getPostData(req,function(postData){
         postData.id = list.length;
         list.push(postData); // 将新数据存入到原来的数据中
         // 将更新过后的数据重新写入到data.json文件中
-        fs.writeFile(path.join(__dirname, './data/data.json'), JSON.stringify(list), function (err) {
-          if (err) {
-            throw err;
-          }
+        res.km_pushData(list,function(){
           res.statusCode = 301;
           res.statusMessage = 'Moved Permanently';
           res.setHeader('location', '/');
