@@ -102,7 +102,7 @@ http.createServer(function (req, res) {
   }
   // 添加GET
   else if (req.url.startsWith('/add') && req.method === 'GET') {
-    res.km_getData(function(){
+    res.km_getData(function(list){
       // 获取对象数据，解析URL对象
       // url.parse(urlString[, parseQueryString[, slashesDenoteHost]])
       // urlString <string> 要解析的 URL 字符串。
