@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="https://avatars2.githubusercontent.com/u/24365000?s=460&v=4" type=image/x-icon>
+	<title>百度分享测试</title>
+	<style type="text/css">
+		.w {
+			width: 1024px;
+			margin: 0 auto;
+		}
+		.fr {
+			float: right;
+		}
+		.via {
+			font-size: 14px;
+		}
+		a {
+			color: #009a61;
+			text-decoration: none;
+		}
+		a:hover {
+			color: #004e31;
+		}
+		img {
+			margin: 0 auto;
+			display: block;
+		}
+		code {
+			padding: 2px 4px;
+			font-size: 90%;
+			color: #c7254e;
+			background-color: #f9f2f4;
+			border-radius: 4px;
+		}
+		pre {
+			padding: 10px;
+			border-radius: 4px;
+			background-color: #eee;
+			word-break: break-all;
+    		word-wrap: break-word;
+			overflow-x: auto;
+		}
+	</style>
+</head>
+<body>
+	<div class="container w">
+		<h1>关于 javascript 一个奇怪的with语法</h1>
+		<div class="via">
+			文章来源：<a href="https://segmentfault.com/q/1010000000655445" target="_blank">https://segmentfault.com/q/1010000000655445</a>
+		</div>
+		<div class="w">
+			<img class="fl" src="https://static.segmentfault.com/v-5ab0701d/global/img/banner-login/banner-bg.svg" data-tag="img_1">
+		</div>
+		<p><code>with(...)0[...]</code> 等价于：</p>
+		<pre>
+with(...) {
+  0[...];
+}</pre>
+		<p>其中 <code>0[...]</code> 是一个看起来很诡异但是合法的 <code>javascript</code> 代码，无非就是调用 0 这个对象的方法。比如 <code>0["toString"]</code> 返回的就是一个函数，等同于 <code>0.toString</code>。</p>
+		<p>所以总的来说，这句话就是为了执行方括号里面的代码，为了少写一个 <code>document</code> 节省几个 bytes 而发明的变态写法，应该是百度内部用的脚本混淆器干的好事。</p>
+		<p>不过很奇怪，其实 <code>0[...]</code> 根本就是多余的啊~直接写 <code>with{...}</code> 明明还可以多省一个字节，为啥百度不用呢。对于题主贴出来的这行代码，连 <code>{...}</code> 都可以直接省了。想不通。</p>
+		<pre>
+// 这真的是合法的代码
+with(document)getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)</pre>
+	</div>
+	<div class="w">
+		<a href="http://share.baidu.com/code/advance" target="_blank">百度分享</a>
+		<div class="bdsharebuttonbox fr" data-tag="share_1">
+			<!-- 此处添加展示按钮 -->
+			<a class="bds_evernotecn" data-cmd="evernotecn"></a>
+			<a class="bds_fbook" data-cmd="fbook"></a>
+			<a class="bds_twi" data-cmd="twi" href="#"></a>
+			<a class="bds_tsina" data-cmd="tsina"></a>
+			<a class="bds_weixin" data-cmd="weixin"></a>
+			<a class="bds_linkedin" data-cmd="linkedin"></a>
+			<a class="bds_print" data-cmd="print"></a>
+			<a class="bds_more" data-cmd="more">更多</a>
+			<a class="bds_count" data-cmd="count"></a>
+		</div>
+	</div>
+	<script>
+		window._bd_share_config = {
+			// 通用设置将作用于所有分享类型，可将通用设置放于此处，如分享内容、分享url等。
+			common : {
+				bdText : '关于 javascript 一个奇怪的with语法',
+				bdDesc : '@kingmui',
+				bdUrl : 'http://www.kingmui.cn/',
+				bdPic : 'https://avatars2.githubusercontent.com/u/24365000?s=460&v=4',
+				bdSign : 'normal', // 使用正常方式挂载回流签名（#[数字签名]） on｜off｜normal
+				bdMini : 1, // 下拉浮层中分享按钮的列数 1｜2｜3
+				bdMiniList : ['fbook', 'twi', 'tsina', 'weixin'],
+				onBeforeClick : function (cmd,config) {
+					// 用户点击分享按钮时执行代码，更改配置。cmd为分享目标id，config为当前设置，返回值为更新后的设置
+				},
+				onAfterClick : function (cmd) {
+					// 用户点击分享按钮后执行代码，cmd为分享目标id。可用于统计等
+				},
+				bdPopupOffsetLeft : 0, //下拉浮层的y偏移量
+				bdPopupOffsetTop : 0 // 下拉浮层的x偏移量
+			},
+			share : [
+				// 分享按钮设置的值为数组或对象，值为数组时可对多个分享按钮应用不同的设置。
+				{
+					"tag" : "share_1", // 表示该配置只会应用于data-tag值一致的分享按钮。如果不设置tag，该配置将应用于所有分享按钮。
+					"bdSize" : 24, // 分享按钮的尺寸 16｜24｜32
+					// "bdCustomStyle" : 自定义样式，引入样式文件
+				}
+			],
+			slide : [
+				// 浮窗分享设置的值为数组或对象，值为数组时可在页面显示多个分享浮窗。
+				{
+					bdImg : 6, // 分享浮窗图标的颜色 	0｜1｜2｜3｜4｜5｜6｜7｜8
+					bdPos : "right", // 分享浮窗的位置
+					bdTop : 200 // 分享浮窗与可视区域顶部的距离(px)
+				},{
+					bdImg : 7,
+					bdPos : "left",
+					bdTop : 200
+				}
+			],
+			image : [
+				// 图片分享设置的值为数组或对象，值为数组时可对图片应用不同的设置。
+				{
+					"tag" : "img_1", // 表示该配置只会应用于data-tag值一致的图片。如果不设置tag，该配置将应用于所有图片。
+					viewType : 'list', // 图片分享按钮样式。 list｜collection
+					viewPos : 'top', // 图片分享展示层的位置。 top｜bottom
+					viewColor : 'black', // 图片分享展示层的背景颜色。 black｜white
+					viewSize : '16', // 图片分享展示层的图标大小。 16｜24｜32
+					viewList : ['fbook', 'twi', 'tsina', 'weixin']
+				}
+				// ,{
+				// 	"tag" : "img_2",
+				// 	viewType : 'list',
+				// 	viewPos : 'top',
+				// 	viewColor : 'black',
+				// 	viewSize : '16',
+				// 	viewList : ['fbook', 'twi', 'tsina', 'weixin']
+				// }
+			],
+			selectShare : [
+				//此处放置划词分享设置
+				{
+					"bdSelectMiniList" : ['fbook', 'twi', 'tsina', 'weixin'],
+					"bdContainerClass" : "container" // 容器class名，自定义划词分享的激活区域
+				}
+			]
+		}
+
+		//以下为js加载部分
+		with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+	</script>
+</body>
+</html>
