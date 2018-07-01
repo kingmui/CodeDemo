@@ -38,13 +38,12 @@
 
   function animate(direction, type, ele) {
     var timer = 200;
-    var $target = $(ele);
     if (type == 'mouseenter') {
-      $target.stop(true, true);
+      ele.stop(true, true);
     }
     if (direction == 'top') {
       if (type == 'mouseenter') {
-        $target.css({
+        ele.css({
           display: 'block',
           top: '-100%',
           left: '0'
@@ -53,7 +52,7 @@
           left: 0
         }, timer)
       } else {
-        $target.animate({
+        ele.animate({
           display: 'block',
           top: '-100%',
           left: '0'
@@ -61,7 +60,7 @@
       }
     } else if (direction == 'left') {
       if (type == 'mouseenter') {
-        $target.css({
+        ele.css({
           display: 'block',
           top: '0',
           left: '-100%'
@@ -70,14 +69,14 @@
           top: 0
         }, timer)
       } else {
-        $target.animate({
+        ele.animate({
           display: 'block',
           left: '-100%'
         }, timer)
       }
     } else if (direction == 'bottom') {
       if (type == 'mouseenter') {
-        $target.css({
+        ele.css({
           display: 'block',
           top: '100%',
           left: '0'
@@ -86,7 +85,7 @@
           left: 0
         }, timer)
       } else {
-        $target.animate({
+        ele.animate({
           display: 'block',
           top: '100%',
           left: '0'
@@ -94,7 +93,7 @@
       }
     } else if (direction == 'right') {
       if (type == 'mouseenter') {
-        $target.css({
+        ele.css({
           display: 'block',
           top: 0,
           left: '100%'
@@ -103,7 +102,7 @@
           top: 0
         }, timer)
       } else {
-        $target.animate({
+        ele.animate({
           display: 'block',
           left: '100%'
         }, timer)
