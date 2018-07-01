@@ -4,16 +4,16 @@
       $(this).hover(function (e) {
         $this = $(this);
         var ele = $this.find(child);
-        var clientX = e.clientX;
-        var clientY = e.clientY;
+        var pageX = e.pageX;
+        var pageY = e.pageY;
         var top = parseInt($this.offset().top);
         var bottom = parseInt(top + $this.height());
         var left = parseInt($this.offset().left);
         var right = parseInt(left + $this.width());
-        var absTop = Math.abs(clientY - top);
-        var absBottom = Math.abs(clientY - bottom);
-        var absLeft = Math.abs(clientX - left);
-        var absRight = Math.abs(clientX - right);
+        var absTop = Math.abs(pageY - top);
+        var absBottom = Math.abs(pageY - bottom);
+        var absLeft = Math.abs(pageX - left);
+        var absRight = Math.abs(pageX - right);
         var min = Math.min(absTop, absBottom, absLeft, absRight);
         var eventType = e.type;
         switch (min) {

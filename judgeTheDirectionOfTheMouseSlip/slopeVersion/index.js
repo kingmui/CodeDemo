@@ -27,7 +27,7 @@
         animate('left', eventType, $shadow);
       }
     }else{
-      //注意此处 y 是负数
+      // 注意此处 y 是负数
       if(y > y0){
         animate('top', eventType, $shadow);
       }else{
