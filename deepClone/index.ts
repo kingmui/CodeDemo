@@ -8,7 +8,9 @@ function deepClone(source, hashMap = new WeakMap()) {
   // 查找哈希表，解决**循环引用**
   if (hashMap.has(source)) return hashMap.get(source);
 
-  const target = Array.isArray(source) ? [...source] : { ...source };
+  const isArray = Array.isArray(source);
+
+  const target = isArray ? [...source] : { ...source };
 
   // 设置哈希表
   hashMap.set(source, target);
@@ -55,6 +57,17 @@ function deepClone(source, hashMap = new WeakMap()) {
   //     }
   //   }
   // }
+
+  // for...in 执行效率很低
+  // const keys = isArray ? undefined : Object.keys(source);
+  // forEach(keys || source, (value, key) => {
+  //   if (keys) key = value;
+  //   if (isObject(source[key])) {
+  //     target[key] = deepClone(source[key], hashMap);
+  //   } else {
+  //     target[key] = source[key];
+  //   }
+  // });
   // ===============
 
   return target;
@@ -63,4 +76,14 @@ function deepClone(source, hashMap = new WeakMap()) {
 function isObject(obj) {
   return obj !== null && typeof obj === "object";
   // return Object.prototype.toString.call(obj) === '[object Object]';
+}
+
+function forEach(array: any[], iterator: (value: any, index: number) => void) {
+  let index = -1;
+  const length = array.length;
+  while (++index < length) {
+    iterator(array[index], index);
+  }
+
+  return array;
 }
